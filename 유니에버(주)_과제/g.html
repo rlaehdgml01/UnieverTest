@@ -1,0 +1,63 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        	$("form").submit(function(event){	//폼을 제출할 때 이벤트 핸들러 등록
+        		event.preventDefault(); // 기본 이벤트 동작을 취소
+        		var searchInput = $("#searchInput").val(); //검색어 가져오기
+        		var searchType = $("#searchType").val(); //검색 조건 가져오기
+        		$.ajax({	//AJAX 요청 
+                    url: "server.jsp",	//요청 URL
+                    type: "POST",	//요청방식	
+                    data: JSON.stringify({			//요청 데이터
+                    	searchInput : searchInput, //검색어
+                    	searchType : searchType    //검색 조건
+                    }),
+                    success: function (data) { //sucess : 데이터 출력
+                    	
+                    	var jsonResult = JSON.parse(data);	//JSON형식으로 파싱
+                    	var html ="<table>"; //검색 결과를 출력하기 위한 html 코드 생성
+                    	
+                    	for(var i = 0; i < jsonResult.length; i++) {
+                    		html += "<tr><td>" + jsonResult[i].empcode +
+                    				"</td><td>" + jsonResult[i].empname +
+                    				"</td><td>" + jsonResult[i].job +
+                    				"</td><td>" + jsonResult[i].sal +
+                    				"</td></tr>";			
+                    	}
+                        html += "</table>";
+                        $("#searchResult").html(html);  //검색 결과 출력
+                    },
+                    error: function () {
+                        alert("검색에 실패했습니다.");
+                    }
+                });
+        	});    
+        });
+    </script>
+</head>
+
+<body>
+        <form>
+            <input type="text" id="searchInput">
+            <select id="searchType">
+                <option value="empcode">사번</option>
+                <option value="empname">직원명</option>
+                <option value="job">직무</option>
+                <option value="sal">급여</option>
+            </select>
+            <input type="submit" value="검색">
+        </form>
+
+        <div id="searchResult"></div>
+
+</body>
+
+</html>

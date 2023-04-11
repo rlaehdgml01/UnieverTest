@@ -1,0 +1,29 @@
+다음 달의 firstDayWeek를 알아내기 위해 
+for (int day = 1; day <= monthDays[month-1]; day++) { 
+	  firstDayWeek++
+를 실행하여 firstDayWeek를 이어지는 다음 달 첫 주에 적용
+
+
+
+
+    <script>
+        var days=[];
+        var firstDayWeek = (year-1)*365+(year-1)/4-(num-1)/100+(num-1)/400;
+        var monthDays=[31,28,31,30,31,30,31,31,30,31,30,31];
+
+        if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {  //2월은 윤년 고려
+            monthDays[1] = 29;
+        }
+
+        for(var month=1;month<=12; month++){
+            for(var day = 1;day<=monthDays[month-1]; day++){
+                firstDayWeek++;
+                days.push(day);
+                if(firstDayWeek%7==0){
+                    firstDayWeek = 0;
+                }
+            }
+        }
+
+
+    </script>

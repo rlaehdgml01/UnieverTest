@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module</title>
+    <style>
+        div{
+            display: inline-block;
+        }
+    </style>
+</head>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    function starter() {
+        var qn = parseInt($("#qn").val());
+        var Input = $("#Input").val();
+        var InputAdd = $("#InputAdd").val();
+        var resultDiv = document.getElementById("result");
+        var inputArr = Input.split(",");
+
+
+        switch (qn) {
+            case 1: {
+                var result = study01(Input);
+                //resultDiv.innerHTML = result;
+                break;
+            }
+            case 2: {
+                var result = study02(Input);
+                resultDiv.innerHTML = result;
+                break;
+            }
+            case 3: {
+                var result = study03(inputArr);
+                resultDiv.innerHTML = result;
+                break;
+            }
+            case 4: {
+                var result = study04(inputArr);
+                resultDiv.innerHTML = result;
+                break;
+            }
+            case 5: {
+
+                var result = study05(parseInt(Input), parseInt(InputAdd));
+                resultDiv.innerHTML = result;
+                break;
+            }
+            case 6: {
+                var result = study06(Input);
+                resultDiv.innerHTML = result;
+                break;
+            }
+            case 7: {
+                var result = study07(Input);
+                resultDiv.innerHTML = result;
+                break;
+            }
+            case 8: {
+                var result = study08(Input);
+                resultDiv.innerHTML = result;
+                console.log(resultDiv.innerHTML);
+                break;
+            }
+            case 9: {
+                var result = study09(parseInt(Input));
+                resultDiv.innerHTML = result;
+                break;
+            }
+            case 10: {
+                study10(parseInt(Input));
+                console.log(parseInt(Input));
+                //resultDiv.innerHTML = result;
+                break;
+            }
+        }
+    }
+    function study01(num) { //innerHTML로 피라미드 문자열을 모양을 잡기 애매해서 
+        for (var i = 0; i < num; i++) {
+            var line = "";
+            for (var j = num - i; j > 1; j--) {
+                line += "&nbsp";
+            }
+            for (var k = 0; k < (i * 2) + 1; k++) {
+                line += "*"
+            }
+            document.write(line + '<br>');
+        }
+    }
+
+    function study02(str) { //회문 검사
+        var result = "";
+        for (var i = 0; i < str.length / 2; i++) {
+            if (str.charAt(i) !== str.charAt(str.length - 1 - i)) {
+                result = "false";
+                return false;
+            }
+        }
+        result = "true";
+        return true;
+    }
+
+    function study03(arr) { //정렬
+        var temp = 0;
+        var res = "";
+        for (var i = 0; i < arr.length; i++) {
+            for (var j = 0; j < arr.length; j++) {
+                if (arr[i] > arr[j]) {
+                    temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        for (var i = arr.length - 1; i >= 0; i--) {
+            console.log(arr[i] + " ");
+            res += arr[i];
+        }
+        return res;
+    }
+
+    function study04(arr) { //역정렬
+        var temp = 0;
+        for (var i = 0; i < arr.length; i++) {
+            for (var j = 0; j < arr.length; j++) {
+                if (arr[i] < arr[j]) {
+                    temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+        }
+        for (var i = arr.length - 1; i >= 0; i--) {
+            console.log(arr[i] + " ");
+            result += arr[i];
+        }
+    }
+
+    function study05(a, n) { //a부터n까지 합
+        var result = n * (n + a) / 2;
+        console.log(result);
+        return result;
+    }
+
+    function study06(str) { // 괄호 타당성
+        var count = 0;
+        var result = false;
+
+        for (var i = 0; i < str.length; i++) {
+            if (str.charAt(i) === '(') {
+                count++;
+            }
+            else if (str.charAt(i) === ')') {
+                count--;
+            }
+        }
+        if (count !== 0 || str.charAt(str.length - 1) == '(') {
+            result = false;
+            console.log(result);
+        }
+        else {
+            result = true;
+            console.log(result);
+        }
+        return result;
+    }
+
+    function study07(num) { // 십진수 -> 이진수
+        var binary = '';
+        while (num > 0) {
+            binary = (num % 2) + binary;
+            num = Math.floor(num / 2);
+        }
+        return binary;
+    }
+
+    function study08(str) { // 이진수 -> 십진수
+        var num = 0;
+        var count = 0;
+        var temp = 0;
+        for (var i = str.length - 1; i >= 0; i--) {
+            temp = parseInt(str.charAt(i));
+            num += temp * Math.pow(2, count);
+            count++;
+        }
+        console.log(num);
+        return num;
+    }
+
+    function study09(num) { // 달팽이숫자
+        console.log(num);
+        var arr = new Array(num).fill().map(() => new Array(num).fill(0)); // 숫자를 담을 배열 생성
+
+        arr[0][0] = 1; //배열의 맨 처음 값 1
+
+        var a = 0, b = 0;
+        var r = 1, side = num - 1; //만약 행 수가 5라면 side는 4
+
+        while (true) {
+            if (r === 1) {
+                for (var i = 0; i < side; i++) {
+                    arr[a][++b] = ++r;
+                }
+            }
+
+            for (var i = 0; i < side; i++) {
+                arr[++a][b] = ++r;
+            }
+
+            for (var i = 0; i < side; i++) {
+                arr[a][--b] = ++r;
+            }
+
+            side--;
+
+            for (var i = 0; i < side; i++) {
+                arr[--a][b] = ++r;
+            }
+            for (var i = 0; i < side; i++) {
+                arr[a][++b] = ++r;
+            }
+
+            side--;
+            if (r === num * num) break;
+        }
+        for (var i = 0; i < num; i++) {
+            console.log(arr[i].join(''));
+            document.write(arr[i].join(''));
+            document.write("<br>");
+        }
+
+    }
+
+    function study10(year) {
+        console.log(year);
+            console.log(year);
+            var firstDayWeek = 0;
+            var temp = "<div>";
+            var calendar="";
+
+             function getYear(year) {
+                
+                //var year = $(year).val(); //사용자가 입력한 연도를 가져옴
+                console.log(year);
+                var firstDayWeek = (year * 365 + year / 4 - year / 100 + year / 400 % 7) % 7; // 해당 연도 1월 1일의 요일 계산
+                firstDayWeek = parseInt(firstDayWeek);
+
+
+                $("#result").append("<div id='calendar_row1'></div>");
+                $("#result").append("<div id='calendar_row2'></div>");
+                $("#result").append("<div id='calendar_row3'></div>");
+                for (var i = 1; i <= 12; i++) {
+                    printCal(year, i); //달력 함수를 12번 실행
+                }
+            }
+
+            function printCal(year, month) {
+                //var tableId = "month" + month; // 해당 월의 달력 테이블 id값 생성
+                temp = "<div class='calendar'><table id='month"+month+"'><tr><td>" + month + "</td><td>월" + "</td></tr><tr></tr><tr><td>일</td><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td><td>토</td></tr>"
+                //var table = $("#month"+month); // 해당 테이블 요소 가져오기
+                var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 각 달의 일 수
+
+
+                if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {  // 2월은 윤년 고려
+                    monthDays[1] = 29; // 2월의 일 수를 29로 설정
+                }
+                temp += "<tr>";
+
+                //첫 주의 시작일을 설정하기 위한 빈 공간
+                for (var i = 0; i < firstDayWeek; i++) {
+                    temp += "<td></td>";
+                }
+
+
+                //monthDays의 원소의 길이 만큼 day를 테이블에 삽입
+                for (var day = 1; day <= monthDays[month - 1]; day++) {
+                    temp += "<td>" + day + "</td>";
+                    firstDayWeek++;
+                    //console.log(firstDayWeek);
+                    //한 주 가 끝나면 새 행 추가
+                    if (firstDayWeek % 7 == 0) {
+                        firstDayWeek = 0;
+                        temp += "</tr><tr>";
+                    }
+                }
+
+
+                temp += "</tr></table></div>";
+
+                //calendarHTML.innerHTML += $("#month"+month).html(temp);
+                //$("#month"+month).html(temp);
+                console.log(temp);
+               // document.write(temp);
+                
+                //if(month%4==0 ){
+                $("#calendar_row"+parseInt(((month-1)/4+1))).append(temp);
+                //}
+                
+            }
+            return getYear(year);
+            
+
+
+    }
+</script>
+<style>
+    div.calendar{
+        margin: 10px;
+    }
+</style>
+<body>
+    <form>
+        <input type="text" id="qn">
+        <input type="text" id="Input">
+        <input type="text" id="InputAdd">
+        <input type="button" value="시작" onclick="starter()">
+    </form>
+    <div id="result">
+
+    </div>
+    
+
+
+</body>
+
+</html>

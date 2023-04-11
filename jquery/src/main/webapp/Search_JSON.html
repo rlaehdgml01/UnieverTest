@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+	    function sortTable(col) {
+	        var table, rows, switching, x, y, shouldSwitch;      //x,y 에 td를 삽입해서 값을 비교
+	        table = document.querySelector("table");
+	        switching = true;					//정렬 진행 상태
+	
+	        while (switching) {
+	            switching = false;
+	            rows = table.rows;			//테이블의 행을 지정
+	
+	            for (var i = 1; i < rows.length - 2; i++) {		//마지막 행인 급여 합계를 반복문에 포함시키지 않기 위해 rows.length - 2
+	                shouldSwitch = false;
+	                x = rows[i].getElementsByTagName("td")[col];		//선택한 컬럼의 td
+	                y = rows[i + 1].getElementsByTagName("td")[col];	
+	
+	                if (col === 3 || col === 0) {
+	                    shouldSwitch = parseInt(x.innerHTML) > parseInt(y.innerHTML);   //급여일 경우에는 parseInt로 값을 비교
+	                } else {
+	                    shouldSwitch = x.innerHTML > y.innerHTML   //문자열 비교 x의 값이 y의 값보다 크다면 shouldSwitch = TRUE 
+	                }
+	
+	                if (shouldSwitch) {
+	                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);	//현재행의 부모 노드(tr) 앞에 바꾼 행을 삽입
+	                    switching = true;
+	                    break;
+	                }
+	            }
+	        }
+	    }
+        $(document).ready(function () {
+            $("form").submit(function (event) {	// 폼을 제출할 때 이벤트 핸들러 등록
+                event.preventDefault(); // 기본 이벤트 동작을 취소
+                var searchInput = $("#searchInput").val(); //검색어 가져오기
+                var searchType = $("#searchType").val(); //검색 조건 가져오기
+                var requestData = "";
+
+                requestData = {
+                    searchInput: searchInput,
+                    searchType: searchType
+                };
+                console.log(searchType);
+
+                $.ajax({	//AJAX 요청 
+                    url: "server_JSON.jsp",	//요청 URL
+                    type: "POST",	//요청방식	
+                    //dataType : "json",
+                    data: requestData,	//요청 데이터
+                    //contentType : "application/json",
+                    success: function (data) { //sucess : 데이터 출력
+
+                        var jsonResult = JSON.parse(data);	//JSON형식으로 파싱
+                        
+                        var html = "<table>"; //검색 결과를 출력하기 위한 html 코드 생성
+                        var sum = 0;
+                        html += "<tr><th onclick='sortTable(0)'>사번</th><th onclick='sortTable(1)'>직원명</th><th onclick='sortTable(2)'>직무</th><th onclick='sortTable(3)'>급여</th></tr>"
+
+                        for (var i = 0; i < jsonResult.length; i++) {
+                            html += "<tr><td>" + jsonResult[i].empcode +
+                         
+                                "</td><td>" + jsonResult[i].empname +
+                                "</td><td>" + jsonResult[i].job +
+                                "</td><td>" + jsonResult[i].sal +
+                                "</td></tr>";
+                            sum += parseInt(jsonResult[i].sal);
+                        }
+
+                        html += "<tr><td colspan='3' style='text-align:right;'>급여 합계:</td><td>" + sum + "</td></tr>";
+
+                        html += "</table>";
+                        $("#searchResult").html(html);  //검색 결과 출력
+
+                    },
+                    error: function (request, status, error) {
+                        alert("검색에 실패 했습니다 code:" + request.status + "\n" + "message:" + request.responseText + "\n" + "error:" + error);
+                    }
+                });
+            });
+        });
+        /*
+        function test(){
+
+            $.ajax({	//AJAX 요청 
+                url: "server.jsp",	//요청 URL
+                type: "POST",	//요청방식	
+                success: function (data) { //sucess : 데이터 출력
+                    $("#searchResult").append(data);
+                },
+                error: function (request,status,error) {
+                    alert("검색에 실패 했습니다 code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                }
+            });
+        }
+        */
+    </script>
+    <style>
+        table {
+        	margin-top : 10px;
+            padding: 10px;
+            border: 1px solid black;
+        }
+
+        th,td {
+            padding: 10px;
+            border: 1px solid black;
+            text-align: center;
+        }
+        th:hover{
+        	background-color : green;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <input type="text" id="searchInput">
+        <select id="searchType">
+            <option value="empcode">사번</option>
+            <option value="empname">직원명</option>
+            <option value="job">직무</option>
+            <option value="sal">급여</option>
+            <option value="all">전체</option>
+        </select>
+        <input type="submit" value="검색">
+        <!--  <input type="button" value="검색" onclick="test()">-->
+    </form>
+
+    <div id="searchResult"></div>
+
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>div</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function getYear(year,month) {
+            
+
+            var year = document.getElementById("year").value; //사용자가 입력한 연도를 가져옴.
+            console.log(year);
+            var days = []; //일자를 저장할 배열
+            var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; //각 달의 일 수
+            var firstDayWeek = ((year - 1) * 365 + (year - 1) / 4 - (year - 1) / 100 + (year - 1) / 400) % 7; //해당 연도 1월 1일 계산
+            console.log(firstDayWeek);
+
+            if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {  //2월은 윤년 고려
+                //console.log(year);
+                monthDays[1] = 29; //2월의 일 수를 29로 설정
+            }
+            for (var month = 1; month <= 12; month++) {
+                for (var day = 1; day <= monthDays[month - 1]; day++) { //해당 월의 일 수만큼 반복
+                    firstDayWeek++;
+                    //console.log(day);
+                    days.push(day);
+                    if (firstDayWeek % 7 == 0) {
+                        firstDayWeek = 0;
+                        console.log(firstDayWeek);
+                    }
+                }
+                /* 
+                const tbl = document.getElementById("calendarDays");
+                for( var i=0;i<days.length;i++){
+                    console.log(days[i]);
+                    console.log(tbl);
+                    var row = tbl.insertRow();  //insertRow
+                    var cell = row.insertCell();
+                    cell.innerHTML = days[i];
+                }
+                */
+            }
+            var calendar = document.getElementById("calendar"); //달력 테이블 가져오기
+            calendar.innerHTML += "<tr>";
+            for(var i=0; i<firstDayWeek;i++){  
+                calendar.innerHTML += "<td></td>"; //해당 주의 크기 만큼 열 생성?
+            }
+            for(var i=0; i<days.length;i++){
+                calendar.innerHTML += "<td>"+days[i]+"</td>"; //
+                if((i+firstDayWeek)%7==0){          //주가 끝나면 다음 행
+                    calendar.innerHTML += "</tr><tr>";
+                }
+                calendar.innerHTML += "</tr>";
+            }
+        }
+
+        function changeColor(className, styleName, color) {
+            $("." + className).css(styleName, color);
+        }
+
+        function addNewDiv(id) {
+            
+            // 지정한 위치
+            //var id = document.getElementById("divId");
+            var month = document.getElementById(id);
+            for (var i = 0; i < month; i++) {
+                getYear(year,i);
+            }
+            /*
+            var boxes = document.querySelectorAll('#container > div > div > div');
+
+            var header_1 =document.
+
+
+            boxes.forEach(box => {                          //각각의 div의 최하단에 div10개 생성
+                for (var i = 0; i < 10; i++) {
+                    var boxDiv = document.createElement('div');
+                    boxDiv.style.float = 'left';
+                    boxDiv.style.position = 'relative';
+                    boxDiv.style.width = '10px';
+                    boxDiv.style.height = '10px';
+                    box.append(boxDiv);
+                }
+            }
+            );
+            */
+    
+        }
+    </script>
+    <style>
+        div {
+            position: relative;
+            border: 1px solid black;
+            margin: -1px -1px -1px -1px;
+            text-align: center;
+            border-collapse: collapse;
+        }
+
+        #container {
+            width: 90%;
+            margin-top: 200px;
+            overflow: hidden;
+
+        }
+
+        #header {
+            width: 100%;
+        }
+
+        #header div {
+            height: 60px;
+        }
+
+        #section {
+            width: 60%;
+            margin: 0 auto;
+        }
+
+        #section>div {
+            height: 40px;
+        }
+
+        #footer div {
+            height: 100px;
+        }
+
+        a {
+
+            padding: 15px;
+            border: 1px solid black;
+            margin: auto;
+        }
+
+        #l_aside {
+            width: 20%;
+            float: left;
+            margin: auto;
+        }
+
+        #l_aside div {
+            height: 80px;
+        }
+
+        #r_aside {
+            width: 20%;
+            float: right;
+            margin: 0 -1px 0 1px;
+        }
+
+        #r_aside div {
+            height: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+
+        <div id="addDivHeader">
+            <div id="header">
+                <div>Enterprise Portal</div>
+                <div>EIS
+                    <a onclick="changeColor('changeRed','border-color','red')">1</a>
+                    <a ondblclick="changeColor('changeGreen','background-color','green')">2</a>
+                    <a onclick="addNewDiv('header_1')">3</a>
+                </div>
+                <div id="header_1">
+                    관리회계 / 원가관리
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>

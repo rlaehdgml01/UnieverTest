@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mCalendar</title>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+    
+        
+        var firstDayWeek = 0;
+        function getYear() {
+            var year = $("#year").val();  //사용자가 입력한 연도를 가져옴
+            console.log(year);
+            firstDayWeek = (year * 365 + year / 4 - year / 100 + year / 400 % 7)%7; // 해당 연도 1월 1일의 요일 계산
+            firstDayWeek = parseInt(firstDayWeek);
+            for (var i = 1; i <= 12; i++) {
+                printCal(year, i); //달력 함수를 12번 실행
+            }    
+        }
+        
+        function printCal(year, month) {
+            var tableId = "month" + month; // 해당 월의 달력 테이블 id값 생성
+            var temp ="<tr><td>"+month+"</td><td>월"+"</td></tr><tr></tr><tr><td>일</td><td>월</td><td>화</td><td>수</td><td>목</td><td>금</td><td>토</td></tr>"
+            var table = $("#" + tableId); // 해당 테이블 요소 가져오기
+            var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 각 달의 일 수
+            
+
+            if (year % 4 === 0 && year % 100 !== 0 || year % 400 === 0) {  // 2월은 윤년 고려
+                monthDays[1] = 29; // 2월의 일 수를 29로 설정
+            }
+            temp += "<tr>";
+
+            //첫 주의 시작일을 설정하기 위한 빈 공간
+            for (var i = 0; i < firstDayWeek; i++) {
+                temp += "<td class='asdf'></td>";
+            }
+            
+            
+            //monthDays의
+            for (var day = 1; day <= monthDays[month - 1]; day++) {
+                temp += "<td>" + day + "</td>";
+                firstDayWeek++;
+                //console.log(firstDayWeek);
+                //한 주 가 끝나면 새 행 추가
+                if (firstDayWeek % 7 == 0) {
+                    firstDayWeek = 0;
+                    temp += "</tr><tr>";
+                }
+            }
+
+
+            temp += "</tr>";
+
+            table.html(temp);
+        }
+
+    </script>
+    <style>
+        div{
+            display: flex;
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+        <form>
+            <input type="text" id="year">
+            <input type="button" value="연도 입력" onclick="getYear()">
+        </form>
+
+        <div>
+            <div><table id="month1"></table></div>
+            <div><table id="month2"></table></div>
+            <div><table id="month3"></table></div>
+            <div><table id="month4"></table></div>
+        </div>
+        <div>
+            <div><table id="month5"></table></div>
+            <div><table id="month6"></table></div>
+            <div><table id="month7"></table></div>
+            <div><table id="month8"></table></div>
+        </div>
+        <div>
+            <div><table id="month9"></table></div>
+            <div><table id="month10"></table></div>
+            <div><table id="month11"></table></div>
+            <div><table id="month12"></table></div>
+        </div>
+       
+
+</body>

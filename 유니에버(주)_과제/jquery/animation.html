@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>animation</title>
+    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        function updateNumber(number) {
+            console.log(number);
+            var digits =number.toString().split('');
+            var digitElements = $(".digit");
+            var delay = 0;      //딜레이를 저장하기 위한 변수
+
+            digitElements.animate({
+                opacity: 0,
+            });
+
+            digitElements.each(function(index) {
+                var digit = digits[index];
+                var digitElements = $(this);
+                digitElements.text(digit);
+                setTimeout(function() {
+                    digitElements.animate({
+                        opacity: 1
+                    },{
+                        duration: 500,
+                        start: function() {
+                            $(this).addClass('animate');        //애니메이션 반복을 위해 addClass를 했다가
+                        },
+                        complete : function(){
+                            $(this).removeClass('animate');     // 애니메이션이 끝나면 다시 removeClass를 해줌
+                        }
+                    });
+                },delay)
+            delay += 550;
+            });
+        }
+    </script>
+</head>
+<style>
+
+    .digit-printer{
+        width: 400px;
+        height: 200px;
+        position: relative;
+        overflow: hidden;
+        margin: 0 auto;
+        top: 200px;
+    }
+
+    .digit-container{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .digit{
+        font-size: 4em;
+        text-align: center;
+        width: 12%;
+        height: 100%;
+    }
+
+    @keyframes digitFall{
+        from{
+            /* 위에서 */
+            transform: translateY(-100%);
+        }
+        to{
+            /* 아래로 */
+            transform: translateY(100%);
+        }
+    }
+    .digit.animate {
+        animation-name: digitFall;
+        animation-duration: 2s;
+        /* animation-timing-function: ease-out; */
+    }
+
+</style>
+<body>
+    <input type="text" id="number"/>
+    <button type="submit" onclick="updateNumber(parseInt(number.value))">입력</button>
+    <div class = "digit-printer">
+        <div class = "digit-container">
+            <div class = "digit"></div>
+            <div class = "digit"></div>
+            <div class = "digit"></div>
+            <div class = "digit"></div>
+            <div class = "digit"></div>
+            <div class = "digit"></div>
+            <div class = "digit"></div>
+        </div>
+    </div>
+</body>
+</html>
