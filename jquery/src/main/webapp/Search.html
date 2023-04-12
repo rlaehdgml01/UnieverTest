@@ -39,6 +39,7 @@
 	    }
 	    
 	    var sum = 0;
+	    var avg = 0;
 	    
         $(document).ready(function () {
             $("form").submit(function (event) {	// 폼을 제출할 때 이벤트 핸들러 등록
@@ -47,6 +48,7 @@
                 var searchType = $("#searchType").val(); //검색 조건 가져오기
                 var requestData = "";
                 sum = 0;
+                avg = 0;
 
                 requestData = {
                     searchInput: searchInput,
@@ -78,12 +80,18 @@
                                 "</td><td>" + jsonResult[i].sal +
                                 "</td></tr>";
                             sum += parseInt(jsonResult[i].sal);
+                 
                         }
-
                         // html += "<tr><td colspan='3' style='text-align:right;'>급여 합계:</td><td>" + sum + "</td></tr>";
 
                         html += "</table>";
                         $("#searchResult").html(html);  //검색 결과 출력
+                        
+                        var table = document.querySelector("table");
+                        avg = sum/parseInt(table.rows.length-1);
+                        console.log(sum);
+                        console.log(table.rows.length-1);
+                        console.log(sum/parseInt(table.rows.length-1));
                         
                     },
                     error: function (request, status, error) {
@@ -94,9 +102,15 @@
         });
 		
         function salSum() {
-	    	sumHtml = "<table><tr><td colspan='3' style='width:158px; text-align:right;'>급여 합계 :</td><td>" +
+	    	var sumHtml = "<table><tr><td colspan='3' style='width:158px; text-align:right;'>급여 합계 :</td><td>" +
 	    			sum + "</td></tr></table>";
 	    	$("#salSum").html(sumHtml);
+	    }
+        
+        function salAvg() {
+	    	var avgHtml = "<table><tr><td colspan='3' style='width:158px; text-align:right;'>급여 평균 :</td><td>" +
+	    			avg + "</td></tr></table>";
+	    	$("#salAvg").html(avgHtml);
 	    }
         
 
@@ -132,10 +146,16 @@
         th:hover{
         	background-color : green;
         }
+        th:active{
+        	box-shadow: 0px 0px 50px 10px yellow;
+        }
         button{
-        	position : absolute;
+			position : absolute;
         	left:300px;
-        	top: 9px;
+        	top: 9px;   
+        }
+        button:nth-child(2){
+        	left:350px;
         }
     </style>
 </head>
@@ -153,10 +173,13 @@
         <input type="submit" value="검색">
         <!--  <input type="button" value="검색" onclick="test()">-->
     </form>
+    
+    <button onclick="salAvg()">평균</button>
     <button onclick="salSum()">합계</button>
 
     <div id="searchResult"></div>
     <div id="salSum"></div>
+    <div id="salAvg"></div>
 </body>
 
 </html>
