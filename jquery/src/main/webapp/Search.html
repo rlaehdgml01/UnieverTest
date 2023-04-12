@@ -16,7 +16,7 @@
 	            switching = false;
 	            rows = table.rows;			//테이블의 행을 지정
 	
-	            for (var i = 1; i < rows.length - 2; i++) {		//마지막 행인 급여 합계를 반복문에 포함시키지 않기 위해 rows.length - 2
+	            for (var i = 1; i < rows.length - 1; i++) {	
 	                shouldSwitch = false;
 	                x = rows[i].getElementsByTagName("td")[col];		//선택한 컬럼의 td
 	                y = rows[i + 1].getElementsByTagName("td")[col];	
