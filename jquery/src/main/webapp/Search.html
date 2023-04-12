@@ -8,17 +8,17 @@
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
 	    function sortTable(col) {
-	        var table, rows, switching, x, y, shouldSwitch;      //x,y 에 td를 삽입해서 값을 비교
+	        var table, rows, switching, x, y, shouldSwitch; 			     //x,y 에 td를 삽입해서 값을 비교
 	        table = document.querySelector("table");
-	        switching = true;					//정렬 진행 상태
+	        switching = true;						//정렬 진행 상태
 	
 	        while (switching) {
 	            switching = false;
-	            rows = table.rows;			//테이블의 행을 지정
+	            rows = table.rows;				//테이블의 행을 지정
 	
 	            for (var i = 1; i < rows.length - 1; i++) {	
 	                shouldSwitch = false;
-	                x = rows[i].getElementsByTagName("td")[col];		//선택한 컬럼의 td
+	                x = rows[i].getElementsByTagName("td")[col];			//선택한 컬럼의 td
 	                y = rows[i + 1].getElementsByTagName("td")[col];	
 	
 	                if (col === 3 || col === 0) {
@@ -26,7 +26,7 @@
 	                }
 	                
 	                else {
-	                    shouldSwitch = x.innerHTML > y.innerHTML   //문자열 비교 x의 값이 y의 값보다 크다면 shouldSwitch = TRUE 
+	                    shouldSwitch = x.innerHTML > y.innerHTML	   //문자열 비교 x의 값이 y의 값보다 크다면 shouldSwitch = TRUE 
 	                }
 	
 	                if (shouldSwitch) {
@@ -149,6 +149,7 @@
         }
         th:active{
         	box-shadow: 0px 0px 50px 10px skyblue;
+        	background-color : skyblue;
         }
         button{
 			position : absolute;
