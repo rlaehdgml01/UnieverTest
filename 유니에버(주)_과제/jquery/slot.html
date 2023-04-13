@@ -5,10 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>slot-machine</title>
-    <script  src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
         function updateNumber(number) {
-            console.log(number);
             var digits =number.toString().split('');
             var digitElements = $(".digit");
             var delay = 0;      //딜레이를 저장하기 위한 변수
@@ -21,15 +20,17 @@
                 var digit = digits[index];
                 var digitElements = $(this);
 
-                
                 digitElements.html(digit);
+                
                 for( var i = 0; i < 10; i++ ){
                     var element = $("<div class='slot'>"+i+"</div>");
                     digitElements.append(element);
                 }
+
                 setTimeout(function() {
+                    digitElements.fadeIn(200);
                     digitElements.animate({
-                        opacity: 1
+                        opacity: 1,
                     },{
                         duration: 800,
                         start: function() {
@@ -51,9 +52,9 @@
     .digit-printer{
         width: 400px;
         height: 95px;
-        position: absolute;
+        position: relative;
         top: 200px;
-        left: 300px;
+        left: 0px;
         overflow: hidden;
         margin: 0 auto;
         border: solid 1px black;
@@ -65,18 +66,15 @@
         width: 100%;
         height: 100%;
         position: absolute;
-        
     }
 
     .digit{
-        justify-content: center;
         font-size: 4em;
         text-align: center;
         width: 12%;
         height: 100%;
     }
     .slot{
-        justify-content: center;
         position: relative;
         font-size: 1em;
         text-align: center;
