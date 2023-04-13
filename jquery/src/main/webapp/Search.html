@@ -39,7 +39,9 @@
 	    }
 	    
 	    var sum = 0;
+	    var sumHtml = null;
 	    var avg = 0;
+	    var avgHtml = null;
 	    
         $(document).ready(function () {
             $("form").submit(function (event) {	// 폼을 제출할 때 이벤트 핸들러 등록
@@ -80,6 +82,7 @@
                                 "</td><td>" + jsonResult[i].sal +
                                 "</td></tr>";
                             sum += parseInt(jsonResult[i].sal);
+                            
                  
                         }
                         // html += "<tr><td colspan='3' style='text-align:right;'>급여 합계:</td><td>" + sum + "</td></tr>";
@@ -98,14 +101,16 @@
             });
         });
 		
+        //합계 출력 함수
         function salSum() {
-	    	var sumHtml = "<table><tr><td colspan='3' style='width:158px; text-align:right;'>급여 합계 :</td><td>" +
+	    	sumHtml = "<table><tr><td colspan='3' style='width:158px; text-align:right;'>급여 합계 :</td><td>" +
 	    			sum + "</td></tr></table>";
 	    	$("#salSum").html(sumHtml);
 	    }
         
+        //평균 출력 함수
         function salAvg() {
-	    	var avgHtml = "<table><tr><td colspan='3' style='width:158px; text-align:right;'>급여 평균 :</td><td>" +
+	    	avgHtml = "<table><tr><td colspan='3' style='width:158px; text-align:right;'>급여 평균 :</td><td>" +
 	    			avg + "</td></tr></table>";
 	    	$("#salAvg").html(avgHtml);
 	    }
@@ -145,14 +150,16 @@
         	background-color : green;
         }
         th:active{
-        	box-shadow: 0px 0px 50px 10px skyblue;
+        	box-shadow: 0px 0px 50px 10px skyblue;      /* 버튼이 눌려있는 동안 표현되는 css 추가 */
         	background-color : skyblue;
+        	font-style: oblique;
         }
         button{
 			position : absolute;
         	left:300px;
         	top: 9px;   
         }
+        /*nth-child 활용하여 css 수정*/
         button:nth-child(2){
         	left:350px;
         }
